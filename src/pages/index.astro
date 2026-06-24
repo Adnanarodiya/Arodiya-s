@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
 import FeaturedProducts from '../components/home/FeaturedProducts.astro';
-import LifestyleMoments from '../components/home/LifestyleMoments.astro';
 import CategoryShowcase from '../components/home/CategoryShowcase.astro';
 import BrandStory from '../components/home/BrandStory.astro';
 import AmbientDecor from '../components/ui/AmbientDecor.astro';
@@ -14,9 +13,8 @@ const featured = await getFeaturedProducts();
 <BaseLayout>
   <Hero />
   <FeaturedProducts entries={featured} />
-  <LifestyleMoments />
-  <CategoryShowcase />
   <BrandStory />
+  <CategoryShowcase />
 
   <section class="relative overflow-hidden bg-green-600 py-16 text-center text-white">
     <div class="bg-cta-pattern absolute inset-0" aria-hidden="true"></div>

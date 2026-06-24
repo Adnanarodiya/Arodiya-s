@@ -1,6 +1,5 @@
 ---
 import type { ProductEntry } from '../../lib/products';
-import { categoryLabels } from '../../lib/products';
 
 interface Props {
   entry: ProductEntry;
@@ -43,12 +42,6 @@ const badgeStyles: Record<string, string> = {
         aria-hidden="true"
       ></div>
 
-      <span
-        class="absolute right-3 top-3 z-10 rounded-full border border-white/60 bg-white/85 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600 shadow-sm backdrop-blur-sm"
-      >
-        {categoryLabels[product.category]}
-      </span>
-
       {
         product.badge && (
           <span
@@ -86,22 +79,7 @@ const badgeStyles: Record<string, string> = {
       </h3>
       <p class="mt-1 line-clamp-2 text-sm leading-snug text-stone-500">{product.tagline}</p>
 
-      {
-        product.tasteNotes.length > 0 && (
-          <div class="mt-3 flex flex-wrap gap-1.5">
-            {product.tasteNotes.slice(0, 2).map((note) => (
-              <span
-                class="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide"
-                style="background: color-mix(in srgb, var(--card-flavor-light) 70%, white); color: var(--card-flavor)"
-              >
-                {note}
-              </span>
-            ))}
-          </div>
-        )
-      }
-
-      <div class="mt-auto flex items-center justify-between border-t border-stone-100 pt-4">
+      <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-4">
         <span class="text-xs font-medium text-stone-400">{product.nutrition.size}</span>
         <span class="product-cta flex items-center gap-1 text-xs font-bold text-[var(--card-flavor)]">
           View

@@ -6,29 +6,29 @@ const { site, params } = siteConfig;
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-stone-700 bg-stone-900 text-stone-300">
+<footer class="border-t border-stone-200 bg-gradient-to-b from-green-50/80 to-white text-stone-600">
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
     <div class="grid gap-8 md:grid-cols-4">
       <div class="md:col-span-2">
         <img
           src={site.logo}
           alt={site.logo_text}
-          class="mb-4 h-10 brightness-0 invert"
+          class="mb-4 h-10 w-auto"
           width={site.logo_width}
           height={site.logo_height}
         />
-        <p class="max-w-sm text-sm leading-relaxed text-stone-400">
+        <p class="max-w-sm text-sm leading-relaxed text-stone-600">
           {params.footer_description}
         </p>
 
-        <div class="mt-5 flex flex-wrap gap-3">
+        <div class="mt-5 flex flex-wrap gap-2">
           {
             socialConfig.main.map((social) => (
               <a
                 href={social.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="rounded-full border border-stone-600 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-stone-300 transition hover:border-green-500 hover:text-green-400"
+                class="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-stone-600 shadow-sm transition hover:border-green-500 hover:text-green-700"
                 aria-label={social.name}
               >
                 {social.name}
@@ -39,12 +39,12 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-white">Explore</h3>
+        <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-stone-900">Explore</h3>
         <ul class="space-y-2 text-sm">
           {
             menu.footer_menu.map((link) => (
               <li>
-                <a href={link.url} class="hover:text-green-400">
+                <a href={link.url} class="transition hover:text-green-700">
                   {link.name}
                 </a>
               </li>
@@ -54,12 +54,12 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-white">Categories</h3>
+        <h3 class="mb-3 text-sm font-bold uppercase tracking-wider text-stone-900">Categories</h3>
         <ul class="space-y-2 text-sm">
           {
             menu.footer_quick_links.map((link) => (
               <li>
-                <a href={link.url} class="hover:text-green-400">
+                <a href={link.url} class="transition hover:text-green-700">
                   {link.name}
                 </a>
               </li>
@@ -69,7 +69,7 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
-    <div class="mt-10 border-t border-stone-700 pt-6 text-center text-xs text-stone-500">
+    <div class="mt-10 border-t border-stone-200 pt-6 text-center text-xs text-stone-500">
       {getCopyright(year)}
     </div>
   </div>
