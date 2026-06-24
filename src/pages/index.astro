@@ -2,8 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
 import FeaturedProducts from '../components/home/FeaturedProducts.astro';
+import LifestyleMoments from '../components/home/LifestyleMoments.astro';
 import CategoryShowcase from '../components/home/CategoryShowcase.astro';
 import BrandStory from '../components/home/BrandStory.astro';
+import AmbientDecor from '../components/ui/AmbientDecor.astro';
 import { getFeaturedProducts } from '../lib/products';
 
 const featured = await getFeaturedProducts();
@@ -12,16 +14,20 @@ const featured = await getFeaturedProducts();
 <BaseLayout>
   <Hero />
   <FeaturedProducts entries={featured} />
+  <LifestyleMoments />
   <CategoryShowcase />
   <BrandStory />
 
-  <section class="bg-green-600 py-16 text-center text-white">
-    <div class="mx-auto max-w-2xl px-4">
+  <section class="relative overflow-hidden bg-green-600 py-16 text-center text-white">
+    <div class="bg-cta-pattern absolute inset-0" aria-hidden="true"></div>
+    <AmbientDecor variant="cta" />
+
+    <div class="relative z-10 mx-auto max-w-2xl px-4">
       <h2 class="text-3xl font-black sm:text-4xl">Ready to taste the difference?</h2>
       <p class="mt-4 text-green-100">Explore our full range of premium beverages today.</p>
       <a
         href="/products"
-        class="mt-8 inline-block rounded-md bg-white px-8 py-3.5 text-sm font-bold text-green-700 shadow-lg transition hover:bg-green-50"
+        class="mt-8 inline-block rounded-md bg-white px-8 py-3.5 text-sm font-bold text-green-700 shadow-lg transition hover:scale-105 hover:bg-green-50 hover:shadow-xl"
       >
         View All Products
       </a>

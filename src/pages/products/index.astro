@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductCard from '../../components/products/ProductCard.astro';
+import AmbientDecor from '../../components/ui/AmbientDecor.astro';
 import { getAllProducts, categoryLabels } from '../../lib/products';
 import type { ProductCategory } from '../../types/product';
 
@@ -14,8 +15,12 @@ const filteredProducts = activeCategory
 ---
 
 <BaseLayout title="Products" description="Browse all Arodiya Beverages — juices, mocktails, sodas, energy drinks and more.">
-  <section class="bg-gradient-to-b from-green-50 to-white py-12 sm:py-16">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <section class="relative overflow-hidden bg-gradient-to-b from-green-50 to-white py-12 sm:py-16">
+    <div class="bg-dots absolute inset-0 opacity-25" aria-hidden="true"></div>
+    <div class="bg-blobs absolute inset-0" aria-hidden="true"></div>
+    <AmbientDecor variant="light" />
+
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div>
         <p class="text-sm font-bold uppercase tracking-widest text-green-600">Our Range</p>
         <h1 class="mt-2 text-4xl font-black text-stone-900 sm:text-5xl">All Products</h1>

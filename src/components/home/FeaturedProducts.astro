@@ -1,6 +1,7 @@
 ---
 import type { ProductEntry } from '../../lib/products';
 import ProductCard from '../products/ProductCard.astro';
+import AmbientDecor from '../ui/AmbientDecor.astro';
 import { siteConfig } from '../../lib/config';
 
 interface Props {
@@ -11,8 +12,11 @@ const { entries } = Astro.props;
 const limit = siteConfig.settings.pagination;
 ---
 
-<section class="bg-stone-50 py-14 sm:py-20">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="relative overflow-hidden bg-stone-50 py-14 sm:py-20">
+  <div class="bg-dots absolute inset-0 opacity-30" aria-hidden="true"></div>
+  <AmbientDecor variant="light" />
+
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <p class="text-sm font-bold uppercase tracking-widest text-green-600">Key Products</p>

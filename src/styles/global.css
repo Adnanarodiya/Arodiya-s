@@ -15,12 +15,157 @@ body {
   font-family: var(--font-body);
 }
 
-.product-image-frame {
+/* ── Product cards ── */
+.product-stage {
   isolation: isolate;
 }
 
 .product-card:hover .product-image {
-  transform: scale(1.08);
+  transform: translateY(-6px) scale(1.06);
+}
+
+.product-card .product-image {
+  transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.product-card:hover {
+  box-shadow:
+    0 24px 48px -12px rgba(0, 0, 0, 0.14),
+    0 0 0 2px color-mix(in srgb, var(--card-flavor) 28%, transparent);
+}
+
+.product-cta {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.product-card:hover .product-cta {
+  opacity: 1;
+}
+
+/* ── Background textures ── */
+.bg-dots {
+  background-image: radial-gradient(circle, #d6d3d1 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-blobs {
+  background:
+    radial-gradient(ellipse 50% 40% at 10% 20%, rgba(132, 204, 22, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 35% at 90% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 25% at 70% 10%, rgba(250, 204, 21, 0.08) 0%, transparent 70%);
+}
+
+.bg-blobs-dark {
+  background:
+    radial-gradient(ellipse 40% 35% at 15% 25%, rgba(34, 197, 94, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 30% at 85% 75%, rgba(132, 204, 22, 0.1) 0%, transparent 70%);
+}
+
+.bg-cta-pattern {
+  background:
+    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.06) 0%, transparent 40%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, transparent 50%);
+}
+
+/* ── Ambient floating decor ── */
+.decor-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.decor-anchor {
+  position: absolute;
+}
+
+.decor-float {
+  width: 4.5rem;
+  height: 4.5rem;
+  opacity: 0.55;
+  animation: decor-float 6s ease-in-out infinite;
+  animation-delay: var(--decor-delay, 0s);
+}
+
+.decor-float-sm {
+  width: 3.5rem;
+  height: 3.5rem;
+  opacity: 0.35;
+  animation: decor-float 7s ease-in-out infinite;
+  animation-delay: var(--decor-delay, 0s);
+}
+
+.decor-bubble {
+  width: 5rem;
+  height: 5rem;
+  animation: decor-float 8s ease-in-out infinite;
+  animation-delay: var(--decor-delay, 0s);
+}
+
+.decor-splash {
+  width: 12rem;
+  height: 12rem;
+  opacity: 0.25;
+  animation: decor-pulse 5s ease-in-out infinite;
+}
+
+.decor-pos-tl { top: 6%; left: 4%; }
+.decor-pos-tr { top: 8%; right: 5%; }
+.decor-pos-bl { bottom: 10%; left: 6%; }
+.decor-pos-br { bottom: 8%; right: 4%; }
+.decor-pos-mid-l { top: 42%; left: 2%; }
+.decor-pos-mid-r { top: 38%; right: 3%; }
+.decor-pos-center { top: 50%; left: 50%; }
+
+.decor-pos-tl .decor-float,
+.decor-pos-tl .decor-float-sm { --decor-rotate: -12deg; }
+.decor-pos-tr .decor-float,
+.decor-pos-tr .decor-float-sm { --decor-rotate: 15deg; }
+.decor-pos-bl .decor-float,
+.decor-pos-bl .decor-float-sm { --decor-rotate: 8deg; }
+.decor-pos-br .decor-float,
+.decor-pos-br .decor-float-sm { --decor-rotate: -10deg; }
+.decor-pos-mid-l .decor-float-sm { --decor-rotate: -5deg; }
+.decor-pos-mid-r .decor-float-sm { --decor-rotate: 8deg; }
+
+.decor-pos-center .decor-splash {
+  transform: translate(-50%, -50%);
+}
+
+@keyframes decor-float {
+  0%, 100% { transform: translateY(0) rotate(var(--decor-rotate, 0deg)); }
+  50% { transform: translateY(-12px) rotate(calc(var(--decor-rotate, 0deg) + 6deg)); }
+}
+
+@keyframes decor-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
+  50% { transform: translate(-50%, -50%) scale(1.08); opacity: 0.3; }
+}
+
+/* ── Lifestyle pairing cards ── */
+.lifestyle-card:hover {
+  border-color: var(--moment-accent);
+  box-shadow: 0 12px 32px -8px color-mix(in srgb, var(--moment-accent) 25%, transparent);
+}
+
+.lifestyle-card:hover .lifestyle-icon-wrap:nth-child(1) {
+  animation: icon-wiggle 0.5s ease;
+}
+
+.lifestyle-card:hover .lifestyle-icon-wrap:nth-child(2) {
+  animation: icon-wiggle 0.5s ease 0.1s;
+}
+
+@keyframes icon-wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1.1); }
+  25% { transform: rotate(-6deg) scale(1.12); }
+  75% { transform: rotate(6deg) scale(1.12); }
+}
+
+/* ── Highlight cards (dark section) ── */
+.highlight-card:hover {
+  transform: translateY(-2px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -29,6 +174,29 @@ body {
   }
 
   .product-card:hover .product-image {
+    transform: none;
+  }
+
+  .product-card:hover {
+    transform: none;
+  }
+
+  .product-accent-line {
+    transform: scaleX(1);
+  }
+
+  .decor-float,
+  .decor-float-sm,
+  .decor-bubble,
+  .decor-splash {
+    animation: none;
+  }
+
+  .lifestyle-card:hover .lifestyle-icon-wrap {
+    animation: none;
+  }
+
+  .highlight-card:hover {
     transform: none;
   }
 }

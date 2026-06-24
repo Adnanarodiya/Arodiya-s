@@ -1,0 +1,84 @@
+---
+import DecorIcon from './DecorIcon.astro';
+
+type IconName =
+  | 'straw'
+  | 'cone'
+  | 'burger'
+  | 'pizza'
+  | 'lemon'
+  | 'ice'
+  | 'fries'
+  | 'popcorn'
+  | 'bubble'
+  | 'splash';
+
+interface DecorItem {
+  icon: IconName;
+  pos: string;
+  size: 'float' | 'float-sm' | 'bubble' | 'splash';
+  delay?: string;
+  extra?: string;
+}
+
+interface Props {
+  variant?: 'hero' | 'light' | 'dark' | 'cta';
+}
+
+const { variant = 'light' } = Astro.props;
+
+const layouts: Record<string, DecorItem[]> = {
+  hero: [
+    { icon: 'lemon', pos: 'decor-pos-tl', size: 'float', delay: '0s' },
+    { icon: 'straw', pos: 'decor-pos-tr', size: 'float', delay: '1.2s' },
+    { icon: 'ice', pos: 'decor-pos-bl', size: 'float', delay: '0.6s' },
+    { icon: 'cone', pos: 'decor-pos-br', size: 'float', delay: '1.8s' },
+    { icon: 'bubble', pos: 'decor-pos-mid-l', size: 'bubble', delay: '0.3s', extra: 'text-green-400' },
+    { icon: 'bubble', pos: 'decor-pos-mid-r', size: 'bubble', delay: '1s', extra: 'text-lime-400' },
+    { icon: 'splash', pos: 'decor-pos-center', size: 'splash', delay: '0s', extra: 'text-green-500' },
+  ],
+  light: [
+    { icon: 'burger', pos: 'decor-pos-tl', size: 'float-sm', delay: '0.4s' },
+    { icon: 'pizza', pos: 'decor-pos-tr', size: 'float-sm', delay: '1.4s' },
+    { icon: 'fries', pos: 'decor-pos-bl', size: 'float-sm', delay: '0.8s' },
+    { icon: 'straw', pos: 'decor-pos-br', size: 'float-sm', delay: '2s' },
+  ],
+  dark: [
+    { icon: 'popcorn', pos: 'decor-pos-tl', size: 'float-sm', delay: '0.5s', extra: 'opacity-40' },
+    { icon: 'cone', pos: 'decor-pos-tr', size: 'float-sm', delay: '1.5s', extra: 'opacity-40' },
+    { icon: 'lemon', pos: 'decor-pos-bl', size: 'float-sm', delay: '1s', extra: 'opacity-30' },
+    { icon: 'ice', pos: 'decor-pos-br', size: 'float-sm', delay: '0.2s', extra: 'opacity-30' },
+  ],
+  cta: [
+    { icon: 'burger', pos: 'decor-pos-tl', size: 'float-sm', delay: '0s', extra: 'opacity-50' },
+    { icon: 'pizza', pos: 'decor-pos-tr', size: 'float-sm', delay: '1s', extra: 'opacity-50' },
+    { icon: 'cone', pos: 'decor-pos-bl', size: 'float-sm', delay: '0.7s', extra: 'opacity-40' },
+    { icon: 'popcorn', pos: 'decor-pos-br', size: 'float-sm', delay: '1.5s', extra: 'opacity-40' },
+    { icon: 'straw', pos: 'decor-pos-mid-l', size: 'float-sm', delay: '0.3s', extra: 'opacity-30' },
+    { icon: 'fries', pos: 'decor-pos-mid-r', size: 'float-sm', delay: '1.2s', extra: 'opacity-30' },
+  ],
+};
+
+const items = layouts[variant] ?? layouts.light;
+const sizeClass: Record<DecorItem['size'], string> = {
+  float: 'decor-float',
+  'float-sm': 'decor-float-sm',
+  bubble: 'decor-bubble',
+  splash: 'decor-splash',
+};
+---
+
+<div class="ambient-decor pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  {
+    items.map((item) => (
+      <div class:list={['decor-anchor', item.pos]}>
+        <div
+          class:list={[sizeClass[item.size], item.extra]}
+          style={`--decor-delay: ${item.delay ?? '0s'}`}
+        >
+          <DecorIcon name={item.icon} />
+        </div>
+      </div>
+    ))
+  }
+</div>

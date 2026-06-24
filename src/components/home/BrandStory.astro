@@ -1,25 +1,31 @@
 ---
+import AmbientDecor from '../ui/AmbientDecor.astro';
+import DecorIcon from '../ui/DecorIcon.astro';
+
 const highlights = [
   {
     title: 'Real Ingredients',
     description: 'Crafted with natural fruit extracts, pure spring water, and no artificial compromises.',
-    icon: '🍃',
+    icon: 'lemon' as const,
   },
   {
     title: 'Multiple Sizes',
     description: 'From on-the-go bottles to family-size jugs — refreshment for every occasion.',
-    icon: '🥤',
+    icon: 'ice' as const,
   },
   {
     title: 'Bold Variety',
     description: 'Juices, mocktails, sodas, energy drinks and premium waters under one trusted brand family.',
-    icon: '✨',
+    icon: 'straw' as const,
   },
 ];
 ---
 
-<section class="bg-stone-900 py-16 text-white sm:py-24">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="relative overflow-hidden bg-stone-900 py-16 text-white sm:py-24">
+  <div class="bg-blobs-dark absolute inset-0" aria-hidden="true"></div>
+  <AmbientDecor variant="dark" />
+
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-3xl text-center">
       <p class="text-sm font-bold uppercase tracking-widest text-green-400">Why Arodiya</p>
       <h2 class="mt-3 text-3xl font-black sm:text-4xl">Made to refresh. Built to impress.</h2>
@@ -32,8 +38,10 @@ const highlights = [
     <div class="mt-12 grid gap-6 sm:grid-cols-3">
       {
         highlights.map((item) => (
-          <div class="rounded-lg border border-stone-700 bg-stone-800/50 p-8 text-center backdrop-blur">
-            <div class="text-4xl">{item.icon}</div>
+          <div class="highlight-card group rounded-lg border border-stone-700 bg-stone-800/50 p-8 text-center backdrop-blur transition hover:border-green-600/50 hover:bg-stone-800/80">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-stone-700/80 transition duration-300 group-hover:scale-110 group-hover:bg-green-900/40">
+              <DecorIcon name={item.icon} class="h-10 w-10" />
+            </div>
             <h3 class="mt-4 text-xl font-bold">{item.title}</h3>
             <p class="mt-2 text-sm leading-relaxed text-stone-400">{item.description}</p>
           </div>

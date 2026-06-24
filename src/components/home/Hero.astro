@@ -1,15 +1,19 @@
 ---
 import { getFeaturedProducts } from '../../lib/products';
+import AmbientDecor from '../ui/AmbientDecor.astro';
 
 const featured = await getFeaturedProducts();
 const heroProduct = featured[0];
 ---
 
-<section 
-  class="border-b border-stone-200 overflow-hidden relative"
-  style={`background: linear-gradient(150deg, ${heroProduct.data.flavorColorLight}25 0%, #ffffff 60%, ${heroProduct.data.flavorColorLight}15 100%)`}
+<section
+  class="relative overflow-hidden border-b border-stone-200"
+  style={`background: linear-gradient(150deg, ${heroProduct.data.flavorColorLight}35 0%, #ffffff 55%, ${heroProduct.data.flavorColorLight}20 100%)`}
 >
-  <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-20 relative z-10">
+  <div class="bg-blobs absolute inset-0" aria-hidden="true"></div>
+  <AmbientDecor variant="hero" />
+
+  <div class="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-20">
     <div class="space-y-6">
       <span class="inline-block rounded-md bg-green-100 px-3 py-1 text-xs font-bold uppercase tracking-widest text-green-800">
         Taste the Refreshment
@@ -27,25 +31,30 @@ const heroProduct = featured[0];
       <div class="flex flex-wrap gap-3">
         <a
           href="/products"
-          class="rounded-md bg-green-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-green-700"
+          class="rounded-md bg-green-600 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-green-700 hover:shadow-lg"
         >
           Shop All Products
         </a>
         <a
           href={`/products/${heroProduct.id}`}
-          class="rounded-md border border-stone-300 px-6 py-3 text-sm font-bold text-stone-700 transition hover:border-green-600 hover:text-green-700"
+          class="rounded-md border border-stone-300 bg-white/80 px-6 py-3 text-sm font-bold text-stone-700 backdrop-blur transition hover:border-green-600 hover:text-green-700"
         >
           Featured Flavor
         </a>
       </div>
     </div>
 
-    <div class="flex justify-center items-center lg:justify-end">
-      <div class="group relative flex aspect-square w-full max-w-md mx-auto items-center justify-center">
+    <div class="flex items-center justify-center lg:justify-end">
+      <div class="group relative flex aspect-square w-full max-w-md items-center justify-center">
+        <div
+          class="absolute inset-[12%] rounded-full opacity-60 blur-2xl transition duration-500 group-hover:opacity-80"
+          style={`background: radial-gradient(circle, ${heroProduct.data.flavorColor}40 0%, transparent 70%)`}
+          aria-hidden="true"
+        ></div>
         <img
           src={heroProduct.data.image}
           alt={heroProduct.data.name}
-          class="h-[85%] w-auto object-contain filter drop-shadow-[0_25px_30px_rgba(0,0,0,0.18)] transition-transform duration-500 ease-out group-hover:scale-105"
+          class="relative z-10 h-[85%] w-auto object-contain drop-shadow-[0_25px_30px_rgba(0,0,0,0.18)] transition-transform duration-500 ease-out group-hover:scale-105"
           width="500"
           height="500"
           loading="eager"
