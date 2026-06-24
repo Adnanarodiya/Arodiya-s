@@ -70,5 +70,73 @@ const bodyStyle = flavorColor
     </main>
     <Footer />
 
+    <script>
+      function initScrollReveal() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+          });
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                (entry.target as HTMLElement).classList.add('revealed');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -36px 0px' }
+        );
+
+        document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+      }
+
+      function initCounters() {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target as HTMLElement;
+              const target = parseInt(el.dataset.counter || '0', 10);
+              const suffix = el.dataset.counterSuffix || '';
+
+              if (reduced) {
+                el.textContent = target + suffix;
+                observer.unobserve(el);
+                return;
+              }
+
+              const duration = 1800;
+              const startTime = performance.now();
+
+              function tick(now: number) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(target * eased) + suffix;
+                if (progress < 1) requestAnimationFrame(tick);
+              }
+
+              requestAnimationFrame(tick);
+              observer.unobserve(el);
+            });
+          },
+          { threshold: 0.5 }
+        );
+
+        document.querySelectorAll('[data-counter]').forEach((el) => observer.observe(el));
+      }
+
+      document.addEventListener('astro:page-load', () => {
+        initScrollReveal();
+        initCounters();
+      });
+    </script>
   </body>
 </html>

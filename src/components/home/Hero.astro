@@ -7,59 +7,126 @@ const heroProduct = featured[0];
 ---
 
 <section
-  class="relative overflow-hidden border-b border-stone-200"
-  style={`background: linear-gradient(150deg, ${heroProduct.data.flavorColorLight}35 0%, #ffffff 55%, ${heroProduct.data.flavorColorLight}20 100%)`}
+  class="relative min-h-[90svh] overflow-hidden border-b border-stone-200"
+  style={`background: linear-gradient(150deg, ${heroProduct.data.flavorColorLight}40 0%, #ffffff 55%, ${heroProduct.data.flavorColorLight}22 100%)`}
 >
   <div class="bg-blobs absolute inset-0" aria-hidden="true"></div>
   <AmbientDecor variant="hero" />
 
-  <div class="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-20">
-    <div class="space-y-6">
-      <span class="inline-block rounded-md bg-green-100 px-3 py-1 text-xs font-bold uppercase tracking-widest text-green-800">
+  <div class="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-24">
+
+    <!-- Text content -->
+    <div class="space-y-7 text-center lg:text-left">
+      <span
+        class="hero-animate inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-green-800"
+        style="--delay: 0.05s"
+      >
+        <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500"></span>
         Taste the Refreshment
       </span>
 
-      <h1 class="text-4xl font-black leading-tight text-stone-900 sm:text-5xl lg:text-6xl">
+      <h1
+        class="hero-animate text-4xl font-black leading-[1.08] tracking-tight text-stone-900 sm:text-5xl lg:text-6xl xl:text-7xl"
+        style="--delay: 0.18s"
+      >
         Pure flavor.<br />
-        <span class="text-green-600">Bold refreshment.</span>
+        <span class="text-gradient">Bold refreshment.</span>
       </h1>
 
-      <p class="max-w-lg text-lg leading-relaxed text-stone-600">
+      <p
+        class="hero-animate mx-auto max-w-md text-lg leading-relaxed text-stone-500 lg:mx-0"
+        style="--delay: 0.32s"
+      >
         Premium juices, mocktails, sodas and energy drinks — crafted for every moment.
       </p>
 
-      <div class="flex flex-wrap gap-3">
+      <div
+        class="hero-animate flex flex-wrap justify-center gap-3 lg:justify-start"
+        style="--delay: 0.46s"
+      >
         <a
           href="/products"
-          class="rounded-md bg-green-600 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-green-700 hover:shadow-lg"
+          class="btn-shimmer inline-flex items-center gap-2 rounded-full bg-green-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-green-600/25 transition hover:bg-green-700 hover:shadow-xl hover:shadow-green-600/30"
         >
           Shop All Products
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+          </svg>
         </a>
         <a
           href={`/products/${heroProduct.id}`}
-          class="rounded-md border border-stone-300 bg-white/80 px-6 py-3 text-sm font-bold text-stone-700 backdrop-blur transition hover:border-green-600 hover:text-green-700"
+          class="inline-flex items-center gap-2 rounded-full border-2 border-stone-300 bg-white/80 px-7 py-3.5 text-sm font-bold text-stone-700 backdrop-blur transition hover:border-green-500 hover:text-green-700"
         >
-          Featured Flavor
+          {heroProduct.data.name}
         </a>
+      </div>
+
+      <!-- Taste note pills -->
+      <div
+        class="hero-animate flex flex-wrap justify-center gap-2 lg:justify-start"
+        style="--delay: 0.58s"
+      >
+        {heroProduct.data.tasteNotes.slice(0, 3).map((note) => (
+          <span
+            class="rounded-full px-3 py-1 text-[11px] font-semibold text-white"
+            style={`background: ${heroProduct.data.flavorColor}cc`}
+          >
+            {note}
+          </span>
+        ))}
       </div>
     </div>
 
+    <!-- Product image -->
     <div class="flex items-center justify-center lg:justify-end">
-      <div class="group relative flex aspect-square w-full max-w-md items-center justify-center">
+      <div class="group relative flex aspect-square w-full max-w-[420px] items-center justify-center">
+        <!-- Radial glow -->
         <div
-          class="absolute inset-[12%] rounded-full opacity-60 blur-2xl transition duration-500 group-hover:opacity-80"
-          style={`background: radial-gradient(circle, ${heroProduct.data.flavorColor}40 0%, transparent 70%)`}
+          class="absolute inset-[10%] rounded-full opacity-50 blur-3xl transition duration-700 group-hover:opacity-70 group-hover:scale-110"
+          style={`background: radial-gradient(circle, ${heroProduct.data.flavorColor}50 0%, transparent 70%)`}
           aria-hidden="true"
         ></div>
+
+        <!-- Rotating ring -->
+        <div
+          class="absolute inset-[5%] rounded-full border border-dashed opacity-20 animate-[spin_18s_linear_infinite]"
+          style={`border-color: ${heroProduct.data.flavorColor}`}
+          aria-hidden="true"
+        ></div>
+
+        <!-- Product image -->
         <img
           src={heroProduct.data.image}
           alt={heroProduct.data.name}
-          class="relative z-10 h-[85%] w-auto object-contain drop-shadow-[0_25px_30px_rgba(0,0,0,0.18)] transition-transform duration-500 ease-out group-hover:scale-105"
+          class="hero-product-animate relative z-10 h-[88%] w-auto object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)] transition-transform duration-700 ease-out group-hover:scale-105 group-hover:-translate-y-2"
           width="500"
           height="500"
           loading="eager"
+          transition:name={`product-${heroProduct.id}`}
         />
+
+        <!-- Badge -->
+        {heroProduct.data.badge && (
+          <span
+            class="absolute bottom-[12%] right-[10%] z-20 rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase tracking-wider shadow-lg"
+            style={`color: ${heroProduct.data.flavorColor}`}
+          >
+            {heroProduct.data.badge}
+          </span>
+        )}
       </div>
     </div>
   </div>
+
+  <!-- Scroll indicator -->
+  <a
+    href="#featured"
+    class="scroll-cue absolute bottom-6 left-1/2 z-20 flex flex-col items-center gap-1"
+    aria-label="Scroll to products"
+  >
+    <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Scroll</span>
+    <svg class="h-5 w-5 text-stone-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z" clip-rule="evenodd" />
+    </svg>
+  </a>
 </section>

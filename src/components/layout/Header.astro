@@ -6,9 +6,21 @@ const { site, navigation_buttons } = siteConfig;
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/90 backdrop-blur-md" transition:persist>
+<!-- Scroll progress bar -->
+<div
+  id="scroll-progress"
+  class="fixed left-0 top-0 z-[100] h-[3px] w-0 bg-gradient-to-r from-green-500 to-lime-400"
+  aria-hidden="true"
+></div>
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-stone-200/80 bg-white/90 backdrop-blur-md transition-shadow duration-300"
+  transition:persist
+>
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-    <a href="/" class="flex items-center gap-3 transition-opacity hover:opacity-80">
+    <!-- Logo -->
+    <a href="/" class="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-80">
       <img
         src={site.logo}
         alt={site.logo_text}
@@ -18,29 +30,207 @@ const currentPath = Astro.url.pathname;
       />
     </a>
 
+    <!-- Desktop nav -->
     <nav class="hidden items-center gap-8 md:flex" aria-label="Main navigation">
       {
         menu.main.map((link) => (
           <a
             href={link.url}
             class:list={[
-              'text-sm font-semibold tracking-wide transition-colors',
+              'group relative text-sm font-semibold tracking-wide transition-colors',
               isActiveNav(link.url, currentPath)
                 ? 'text-[var(--color-primary)]'
                 : 'text-[var(--color-text)] hover:text-[var(--color-primary)]',
             ]}
           >
             {link.name}
+            <span
+              class:list={[
+                'absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[var(--color-primary)] transition-all duration-300',
+                isActiveNav(link.url, currentPath)
+                  ? 'w-full'
+                  : 'w-0 group-hover:w-full',
+              ]}
+            />
           </a>
         ))
       }
     </nav>
 
-    <a
-      href={navigation_buttons.cta.link}
-      class="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:opacity-90"
-    >
-      {navigation_buttons.cta.label}
-    </a>
+    <!-- Right: CTA + hamburger -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a
+        href={navigation_buttons.cta.link}
+        class="btn-shimmer hidden rounded-full bg-[var(--color-primary)] px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md sm:inline-flex"
+      >
+        {navigation_buttons.cta.label}
+      </a>
+
+      <!-- Hamburger -->
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        class="flex h-10 w-10 flex-col items-center justify-center gap-[7px] rounded-xl text-stone-700 transition hover:bg-stone-100 md:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
   </div>
 </header>
+
+<!-- Mobile menu overlay -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-40 hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+>
+  <!-- Backdrop -->
+  <div
+    id="mobile-menu-backdrop"
+    class="absolute inset-0 bg-black/45 opacity-0 backdrop-blur-sm"
+  ></div>
+
+  <!-- Slide-in panel -->
+  <div
+    id="mobile-menu-panel"
+    class="absolute right-0 top-0 flex h-full w-[min(85vw,360px)] translate-x-full flex-col bg-white shadow-2xl"
+  >
+    <!-- Panel header -->
+    <div class="flex items-center justify-between border-b border-stone-100 px-5 py-4">
+      <img
+        src={site.logo}
+        alt={site.logo_text}
+        class="h-8 w-auto"
+        width={site.logo_width}
+        height={site.logo_height}
+      />
+      <button
+        id="mobile-menu-close"
+        type="button"
+        class="flex h-9 w-9 items-center justify-center rounded-xl text-stone-500 transition hover:bg-stone-100"
+        aria-label="Close menu"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Nav links -->
+    <nav class="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
+      {
+        menu.main.map((link, i) => (
+          <a
+            href={link.url}
+            class:list={[
+              'mobile-nav-link flex items-center justify-between rounded-xl px-4 py-3.5 text-[15px] font-semibold transition-all',
+              isActiveNav(link.url, currentPath)
+                ? 'bg-green-50 text-green-700'
+                : 'text-stone-700 hover:bg-stone-50 hover:text-green-700',
+            ]}
+            style={`animation-delay: ${(i + 1) * 70}ms`}
+          >
+            <span>{link.name}</span>
+            {isActiveNav(link.url, currentPath) && (
+              <span class="h-1.5 w-1.5 rounded-full bg-green-500" />
+            )}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Panel footer -->
+    <div class="border-t border-stone-100 p-4">
+      <a
+        href={navigation_buttons.cta.link}
+        class="block w-full rounded-full bg-green-600 py-3.5 text-center text-sm font-bold text-white shadow-md transition hover:bg-green-700"
+      >
+        {navigation_buttons.cta.label}
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initHeader() {
+    // ── Scroll progress bar ──
+    const progressBar = document.getElementById('scroll-progress');
+    if (progressBar) {
+      const update = () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        (progressBar as HTMLElement).style.width = `${pct}%`;
+      };
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+
+    // ── Header scroll shadow ──
+    const header = document.getElementById('site-header');
+    if (header) {
+      const update = () => header.classList.toggle('header-scrolled', window.scrollY > 8);
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+
+    // ── Mobile menu ──
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const menu = document.getElementById('mobile-menu');
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    const panel = document.getElementById('mobile-menu-panel');
+
+    if (!toggle || !menu || !backdrop || !panel) return;
+
+    let isOpen = false;
+
+    function openMenu() {
+      isOpen = true;
+      menu!.classList.remove('hidden');
+      menu!.classList.add('mobile-menu-open');
+      document.body.style.overflow = 'hidden';
+      toggle!.setAttribute('aria-expanded', 'true');
+      toggle!.classList.add('hamburger-open');
+      requestAnimationFrame(() => {
+        (backdrop as HTMLElement).style.opacity = '1';
+        (panel as HTMLElement).style.transform = 'translateX(0)';
+      });
+    }
+
+    function closeMenu() {
+      if (!isOpen) return;
+      isOpen = false;
+      (backdrop as HTMLElement).style.opacity = '0';
+      (panel as HTMLElement).style.transform = 'translateX(100%)';
+      toggle!.setAttribute('aria-expanded', 'false');
+      toggle!.classList.remove('hamburger-open');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (!isOpen) {
+          menu!.classList.add('hidden');
+          menu!.classList.remove('mobile-menu-open');
+        }
+      }, 380);
+    }
+
+    toggle.addEventListener('click', () => (isOpen ? closeMenu() : openMenu()));
+    closeBtn?.addEventListener('click', closeMenu);
+    backdrop.addEventListener('click', closeMenu);
+
+    menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) closeMenu();
+    });
+  }
+
+  document.addEventListener('astro:page-load', initHeader);
+</script>

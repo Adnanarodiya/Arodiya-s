@@ -7,11 +7,19 @@ interface Props {
 }
 
 const { activeCategory } = Astro.props;
+
+const categoryIcons: Record<string, string> = {
+  juice: '🍊',
+  mocktail: '🍹',
+  soda: '🥤',
+  energy: '⚡',
+  water: '💧',
+};
 ---
 
 <div class="filter-scroll -mx-4 px-4 sm:mx-0 sm:px-0">
   <nav
-    class="flex gap-2 overflow-x-auto overscroll-x-contain pb-2 sm:flex-wrap sm:overflow-visible sm:pb-0"
+    class="flex gap-2 overflow-x-auto overscroll-x-contain pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0"
     aria-label="Filter by category"
     role="tablist"
     id="product-filters"
@@ -22,7 +30,7 @@ const { activeCategory } = Astro.props;
       role="tab"
       aria-selected={!activeCategory}
       class:list={[
-        'filter-btn shrink-0 rounded-full px-4 py-2.5 text-xs font-bold transition sm:px-5 sm:text-sm',
+        'filter-btn shrink-0 rounded-full px-4 py-2.5 text-xs font-bold sm:px-5 sm:text-sm',
         !activeCategory ? 'filter-active' : 'filter-inactive',
       ]}
     >
@@ -36,10 +44,11 @@ const { activeCategory } = Astro.props;
           role="tab"
           aria-selected={activeCategory === key}
           class:list={[
-            'filter-btn shrink-0 rounded-full px-4 py-2.5 text-xs font-bold transition sm:px-5 sm:text-sm',
+            'filter-btn shrink-0 inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-bold sm:px-5 sm:text-sm',
             activeCategory === key ? 'filter-active' : 'filter-inactive',
           ]}
         >
+          <span aria-hidden="true">{categoryIcons[key]}</span>
           {label}
         </a>
       ))
@@ -55,26 +64,39 @@ const { activeCategory } = Astro.props;
     const raw = params.get('category');
     const active = raw && VALID_CATEGORIES.includes(raw) ? raw : null;
 
+    // Update filter buttons
     document.querySelectorAll<HTMLAnchorElement>('.filter-btn[data-filter]').forEach((btn) => {
       const filter = btn.dataset.filter;
       const isActive = active === null ? filter === 'all' : filter === active;
-
       btn.classList.toggle('filter-active', isActive);
       btn.classList.toggle('filter-inactive', !isActive);
       btn.setAttribute('aria-selected', String(isActive));
     });
 
-    document.querySelectorAll<HTMLElement>('[data-product-category]').forEach((item) => {
+    // Show/hide products with stagger reveal re-init
+    let visibleCount = 0;
+    document.querySelectorAll<HTMLElement>('[data-product-category]').forEach((item, i) => {
       const category = item.dataset.productCategory;
       const show = !active || category === active;
       item.classList.toggle('hidden', !show);
+
+      if (show) {
+        item.style.setProperty('--reveal-delay', `${Math.min(visibleCount, 5) * 60}ms`);
+        item.classList.remove('revealed');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => item.classList.add('revealed'));
+        });
+        visibleCount++;
+      }
     });
 
+    // Update count
     const countEl = document.getElementById('product-count');
-    if (countEl) {
-      const visible = document.querySelectorAll('[data-product-category]:not(.hidden)').length;
-      countEl.textContent = String(visible);
-    }
+    if (countEl) countEl.textContent = String(visibleCount);
+
+    // Empty state
+    const emptyState = document.getElementById('empty-state');
+    if (emptyState) emptyState.classList.toggle('hidden', visibleCount > 0);
   }
 
   document.addEventListener('astro:page-load', applyProductFilters);
