@@ -1,0 +1,53 @@
+---
+import type { ProductEntry } from '../../lib/products';
+
+interface Props {
+  entry: ProductEntry;
+}
+
+const { entry } = Astro.props;
+const product = entry.data;
+---
+
+<section
+  class="relative overflow-hidden py-12 sm:py-20"
+  style={`background: linear-gradient(160deg, ${product.flavorColorLight} 0%, #ffffff 55%, ${product.flavorColorLight}40 100%)`}
+>
+  <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+    <div class="order-2 space-y-5 lg:order-1">
+      <p class="text-sm font-bold uppercase tracking-widest" style={`color: ${product.flavorColor}`}>
+        {product.brand}
+      </p>
+      <h1 class="text-4xl font-black text-stone-900 sm:text-5xl">{product.name}</h1>
+      <p class="text-xl font-medium text-stone-700">{product.tagline}</p>
+      <div class="flex flex-wrap gap-2">
+        {
+          product.tasteNotes.map((note) => (
+            <span
+              class="rounded-md px-4 py-1.5 text-sm font-semibold text-white"
+              style={`background: ${product.flavorColor}`}
+            >
+              {note}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2 flex justify-center items-center">
+      <div
+        class="group relative flex aspect-square w-full max-w-md mx-auto items-center justify-center"
+        transition:name={`product-${entry.id}`}
+      >
+        <img
+          src={product.image}
+          alt={product.name}
+          class="h-[85%] w-auto object-contain filter drop-shadow-[0_25px_30px_rgba(0,0,0,0.18)] transition-transform duration-500 ease-out group-hover:scale-105"
+          width="500"
+          height="500"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </div>
+</section>

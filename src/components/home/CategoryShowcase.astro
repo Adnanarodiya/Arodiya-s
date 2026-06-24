@@ -1,0 +1,46 @@
+---
+import { getAllProducts, categoryLabels } from '../../lib/products';
+import type { ProductCategory } from '../../types/product';
+
+const products = await getAllProducts();
+
+const categories = (['juice', 'mocktail', 'soda', 'energy', 'water'] as ProductCategory[])
+  .map((cat) => {
+    const sample = products.find((p) => p.data.category === cat);
+    return { key: cat, label: categoryLabels[cat], entry: sample };
+  })
+  .filter((c) => c.entry);
+---
+
+<section class="bg-gradient-to-b from-stone-50 to-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mb-10 text-center">
+      <p class="text-sm font-bold uppercase tracking-widest text-green-600">Collections</p>
+      <h2 class="mt-2 text-3xl font-black text-stone-900 sm:text-4xl">Browse by Category</h2>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        categories.map(({ key, label, entry }) => (
+          <a
+            href={`/products?category=${key}`}
+            class="group block overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm transition hover:shadow-md"
+          >
+            <div class="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
+              <img
+                src={entry!.data.image}
+                alt={entry!.data.name}
+                class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                loading="lazy"
+              />
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-bold text-stone-900 group-hover:text-green-700">{label}</h3>
+              <p class="text-sm text-stone-500">Explore {label.toLowerCase()}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

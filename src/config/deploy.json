@@ -1,0 +1,11 @@
+{
+  "staging": {
+    "trigger": "1",
+    "_note": "Increase this number by 1 to push your changes to the staging website for review."
+  },
+  "production": {
+    "trigger": "1",
+    "_note": "Increase this number by 1 to publish your changes live. Make sure you have reviewed the staging website first."
+  },
+  "draft": false
+}

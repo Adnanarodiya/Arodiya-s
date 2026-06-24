@@ -1,0 +1,46 @@
+---
+import { siteConfig, getMenu, isActiveNav } from '../../lib/config';
+
+const menu = getMenu('en');
+const { site, navigation_buttons } = siteConfig;
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/90 backdrop-blur-md" transition:persist>
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+    <a href="/" class="flex items-center gap-3 transition-opacity hover:opacity-80">
+      <img
+        src={site.logo}
+        alt={site.logo_text}
+        class="h-10 w-auto"
+        width={site.logo_width}
+        height={site.logo_height}
+      />
+    </a>
+
+    <nav class="hidden items-center gap-8 md:flex" aria-label="Main navigation">
+      {
+        menu.main.map((link) => (
+          <a
+            href={link.url}
+            class:list={[
+              'text-sm font-semibold tracking-wide transition-colors',
+              isActiveNav(link.url, currentPath)
+                ? 'text-[var(--color-primary)]'
+                : 'text-[var(--color-text)] hover:text-[var(--color-primary)]',
+            ]}
+          >
+            {link.name}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a
+      href={navigation_buttons.cta.link}
+      class="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:opacity-90"
+    >
+      {navigation_buttons.cta.label}
+    </a>
+  </div>
+</header>

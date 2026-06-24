@@ -1,0 +1,54 @@
+{
+  "en": {
+    "main": [
+      {
+        "name": "Home",
+        "url": "/"
+      },
+      {
+        "name": "Products",
+        "url": "/products"
+      },
+      {
+        "name": "Our Story",
+        "url": "/our-story"
+      },
+      {
+        "name": "Where to Buy",
+        "url": "/where-to-buy"
+      }
+    ],
+    "footer_menu": [
+      {
+        "name": "All Products",
+        "url": "/products"
+      },
+      {
+        "name": "Our Story",
+        "url": "/our-story"
+      },
+      {
+        "name": "Where to Buy",
+        "url": "/where-to-buy"
+      }
+    ],
+    "footer_quick_links": [
+      {
+        "name": "Fruit Juices",
+        "url": "/products?category=juice"
+      },
+      {
+        "name": "Mocktails",
+        "url": "/products?category=mocktail"
+      },
+      {
+        "name": "Soft Drinks",
+        "url": "/products?category=soda"
+      },
+      {
+        "name": "Energy Drinks",
+        "url": "/products?category=energy"
+      }
+    ]
+  }
+}

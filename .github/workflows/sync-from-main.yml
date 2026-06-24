@@ -1,0 +1,78 @@
+name: Sync Main → Editor & Staging
+
+# Runs when a developer (or any non-bot actor) pushes directly to main.
+# Keeps editor and staging branches in sync with developer code changes.
+# Note: pushes made by GITHUB_TOKEN from other workflows never trigger this
+# workflow (GitHub's built-in restriction), so there is no circular loop.
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-operations
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # Skip if triggered by the bot itself (extra safety net)
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Sync main → staging
+        continue-on-error: true
+        run: |
+          git checkout staging
+          git pull origin staging
+          if git merge origin/main --no-ff -m "chore: sync main → staging [auto-sync]"; then
+            git push origin staging
+            echo "✅ Synced main into staging"
+          else
+            git merge --abort
+            echo "⚠️ Conflict syncing main into staging — manual resolution needed"
+            echo "Run: git checkout staging && git merge origin/main"
+          fi
+
+      - name: Sync main → editor
+        continue-on-error: true
+        run: |
+          git checkout editor
+          git pull origin editor
+          if git merge origin/main --no-ff -m "chore: sync main → editor [auto-sync]"; then
+            git push origin editor
+            echo "✅ Synced main into editor"
+          else
+            # If the only conflict is deploy.json, keep editor's version
+            # (editors own that file — developer changes to it should not overwrite)
+            UNRESOLVED=$(git diff --name-only --diff-filter=U)
+            OTHER=$(echo "$UNRESOLVED" | grep -v "^src/config/deploy\.json$" | grep -c . || true)
+            if [ "$OTHER" -gt 0 ]; then
+              git merge --abort
+              echo "⚠️ Conflicts in source files — sync main→editor needs manual resolution"
+              echo "Run: git checkout editor && git merge origin/main"
+            else
+              git checkout HEAD -- src/config/deploy.json
+              git add src/config/deploy.json
+              git commit -m "chore: sync main → editor [auto-sync, kept deploy trigger]"
+              git push origin editor
+              echo "✅ Synced main into editor (deploy.json kept from editor)"
+            fi
+          fi

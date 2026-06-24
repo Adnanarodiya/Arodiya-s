@@ -1,0 +1,74 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+
+import { siteConfig, getThemeCssVars } from '../lib/config';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  flavorColor?: string;
+}
+
+const { site, metadata, google_tag_manager } = siteConfig;
+const themeVars = getThemeCssVars();
+
+const {
+  title = site.title,
+  description = metadata.meta_description,
+  flavorColor,
+} = Astro.props;
+
+const pageTitle = title === site.title ? title : `${title} | ${site.title}`;
+const bodyStyle = flavorColor
+  ? { ...themeVars, '--page-flavor': flavorColor }
+  : themeVars;
+---
+
+<!doctype html>
+<html lang="en" transition:animate="fade" style={bodyStyle}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content={metadata.meta_author} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={metadata.meta_image} />
+    <link rel="icon" type="image/svg+xml" href={site.favicon} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>{pageTitle}</title>
+    <ClientRouter />
+    {
+      google_tag_manager.enable && (
+        <script is:inline define:vars={{ gtmId: google_tag_manager.gtm_id }}>
+          {(function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            const f = d.getElementsByTagName(s)[0];
+            const j = d.createElement(s);
+            const dl = l !== 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, 'script', 'dataLayer', gtmId)}
+        </script>
+      )
+    }
+  </head>
+  <body class="min-h-screen flex flex-col bg-[var(--color-body)] text-[var(--color-text-dark)]">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+  </body>
+</html>

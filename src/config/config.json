@@ -1,0 +1,38 @@
+{
+  "site": {
+    "title": "Arodiya Beverages",
+    "base_url": "https://github.com/Adnanarodiya/Arodiya-s",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/logo.svg",
+    "logo": "/logo.svg",
+    "logo_width": "180",
+    "logo_height": "40",
+    "logo_text": "Arodiya Beverages"
+  },
+  "settings": {
+    "pagination": 6,
+    "summary_length": 120,
+    "products_folder": "products"
+  },
+  "params": {
+    "contact_email": "hello@arodiya.com",
+    "footer_description": "Premium beverages crafted for refreshment. Juices, mocktails, sodas, energy drinks and waters from trusted brands — Rahat and Hayat.",
+    "copyright": "Copyright © {year} Arodiya Beverages. All Rights Reserved"
+  },
+  "google_tag_manager": {
+    "enable": false,
+    "gtm_id": "GTM-XXXXXX"
+  },
+  "navigation_buttons": {
+    "cta": {
+      "label": "Explore Flavors",
+      "link": "/products"
+    }
+  },
+  "metadata": {
+    "meta_author": "Arodiya Beverages",
+    "meta_image": "/images/products/lemonade.jpg",
+    "meta_description": "Arodiya Beverages — premium soft drinks, fruit juices, mocktails, energy drinks and waters. Discover Rahat Lemonade, Mango Juice, Blue Ocean Mocktail, Rockbull Energy and more."
+  }
+}

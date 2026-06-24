@@ -1,0 +1,44 @@
+---
+const highlights = [
+  {
+    title: 'Real Ingredients',
+    description: 'Crafted with natural fruit extracts, pure spring water, and no artificial compromises.',
+    icon: '🍃',
+  },
+  {
+    title: 'Multiple Sizes',
+    description: 'From on-the-go bottles to family-size jugs — refreshment for every occasion.',
+    icon: '🥤',
+  },
+  {
+    title: 'Bold Variety',
+    description: 'Juices, mocktails, sodas, energy drinks and premium waters under one trusted brand family.',
+    icon: '✨',
+  },
+];
+---
+
+<section class="bg-stone-900 py-16 text-white sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="text-sm font-bold uppercase tracking-widest text-green-400">Why Arodiya</p>
+      <h2 class="mt-3 text-3xl font-black sm:text-4xl">Made to refresh. Built to impress.</h2>
+      <p class="mt-4 text-lg leading-relaxed text-stone-400">
+        We bring together the best of Rahat juices, Hayat beverages, and premium energy drinks — delivering
+        quality you can taste in every sip.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-3">
+      {
+        highlights.map((item) => (
+          <div class="rounded-lg border border-stone-700 bg-stone-800/50 p-8 text-center backdrop-blur">
+            <div class="text-4xl">{item.icon}</div>
+            <h3 class="mt-4 text-xl font-bold">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-stone-400">{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

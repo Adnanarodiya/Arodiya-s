@@ -1,0 +1,21 @@
+---
+import type { ProductEntry } from '../../lib/products';
+import ProductCard from './ProductCard.astro';
+
+interface Props {
+  entries: ProductEntry[];
+}
+
+const { entries } = Astro.props;
+
+if (entries.length === 0) return null;
+---
+
+<section class="bg-stone-50 py-12 sm:py-16">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 class="mb-8 text-2xl font-black text-stone-900 sm:text-3xl">You Might Also Like</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {entries.map((entry) => <ProductCard entry={entry} />)}
+    </div>
+  </div>
+</section>
